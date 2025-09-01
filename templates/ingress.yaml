@@ -18,10 +18,9 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "python-app.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+  
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.ingress.className }}
@@ -38,8 +37,7 @@ spec:
   {{- end }}
   rules:
     {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
-      http:
+    - http:
         paths:
           {{- range .paths }}
           - path: {{ .path }}
