@@ -52,7 +52,7 @@ ingress:
   hosts:
     - host: chart-example.local
       paths:
-        - path: /test
+        - path: /test(/|$)(.*)
           pathType: ImplementationSpecific
     
     - host: chart-example.local
